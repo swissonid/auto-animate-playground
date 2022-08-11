@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
+
+import autoAnimate from '@formkit/auto-animate';
 type ItemProp = {
   title: string;
 };
@@ -14,6 +16,11 @@ function Item({ title }: ItemProp) {
 
 function App() {
   const [todos, setTodo] = useState<string[]>([]);
+  const parent = useRef(null);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
 
   function addItemToList() {
     setTodo((currentList) => {
@@ -21,12 +28,20 @@ function App() {
     });
   }
 
+  function removeItem() {
+    setTodo((currentList) => {
+      currentList.pop();
+      return [...currentList];
+    });
+  }
+
   return (
     <div className="App">
-      <ul>
+      <button onClick={removeItem}>Remove</button>
+      <ul ref={parent}>
         <li>
           {todos.map((itemTitle) => (
-            <Item title={itemTitle} />
+            <Item key={itemTitle} title={itemTitle} />
           ))}
         </li>
       </ul>
