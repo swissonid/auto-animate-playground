@@ -16,12 +16,19 @@ function Item({ title }: ItemProp) {
 
 function App() {
   const [todos, setTodo] = useState<string[]>([]);
-  const [parent] = useAutoAnimate(/* optional config */);
+  const [parent] = useAutoAnimate();
 
   const addTodo = () =>
     setTodo((current) => [...current, `Item ${current.length + 1}`]);
+  const removeTodo = () =>
+    setTodo((current) => {
+      const newList = [...current];
+      newList.pop();
+      return newList;
+    });
   return (
     <>
+      <button onClick={removeTodo}>Remove</button>
       <ul ref={parent}>
         {todos.map((todo) => (
           <Item key={todo} title={todo} />
