@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { AutoAnimateTodoList } from './Auto-animate-list';
+import { AutoAnimateTodoList } from './AutoAnimateList';
 
 function App() {
   const [todos, setTodo] = useState<string[]>([]);
