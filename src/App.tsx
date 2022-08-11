@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
 
-import autoAnimate from '@formkit/auto-animate';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 type ItemProp = {
   title: string;
 };
@@ -16,37 +16,19 @@ function Item({ title }: ItemProp) {
 
 function App() {
   const [todos, setTodo] = useState<string[]>([]);
-  const parent = useRef(null);
+  const [parent] = useAutoAnimate(/* optional config */);
 
-  useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, [parent]);
-
-  function addItemToList() {
-    setTodo((currentList) => {
-      return [...currentList, `Item ${currentList.length + 1}`];
-    });
-  }
-
-  function removeItem() {
-    setTodo((currentList) => {
-      currentList.pop();
-      return [...currentList];
-    });
-  }
-
+  const addTodo = () =>
+    setTodo((current) => [...current, `Item ${current.length + 1}`]);
   return (
-    <div className="App">
-      <button onClick={removeItem}>Remove</button>
+    <>
       <ul ref={parent}>
-        <li>
-          {todos.map((itemTitle) => (
-            <Item key={itemTitle} title={itemTitle} />
-          ))}
-        </li>
+        {todos.map((todo) => (
+          <Item key={todo} title={todo} />
+        ))}
       </ul>
-      <button onClick={addItemToList}>Add</button>
-    </div>
+      <button onClick={addTodo}>Add number</button>
+    </>
   );
 }
 
